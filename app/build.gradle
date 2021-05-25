@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.5.0'
+
+    ['base', 'controls', 'fxml', 'graphics', 'media', 'swing', 'web'].each {
+        implementation group: 'org.openjfx', name: 'javafx-' + it, version: '16', classifier: 'win'
+    }
+
+    implementation group: 'org.jfxtras', name: 'jmetro', version: '11.6.15'
+
+    implementation group: 'uk.co.caprica', name: 'vlcj', version: '4.7.1'
+
+    implementation group: 'uk.co.caprica', name: 'vlcj-javafx', version: '1.0.2'
+
+    // Use JUnit Jupiter API for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+
+    // Use JUnit Jupiter Engine for testing.
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.0-jre'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'fun.mactavish.mplayer.App'
+}
+
+tasks.named('test') {
+    // Use junit platform for unit tests.
+    useJUnitPlatform()
+}
