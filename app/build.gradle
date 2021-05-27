@@ -1,6 +1,9 @@
+import java.util.stream.Collectors
+
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 repositories {
@@ -8,7 +11,12 @@ repositories {
     mavenCentral()
 }
 
-
+javafx {
+    version = '16'
+    modules = ['base', 'controls', 'fxml', 'graphics', 'media', 'swing', 'web'].stream().map {
+        'javafx.' + it
+    }.collect(Collectors.toList())
+}
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.5.0'
