@@ -26,8 +26,6 @@ public class MediaScreen extends BorderPane {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    // https://stackoverflow.com/questions/54039484/value-is-null-when-loading-constructor/54039809
-
     MediaScreen(@Value("${file}") String url) {
         this.imageView.fitWidthProperty().bind(this.widthProperty());
         this.imageView.fitHeightProperty().bind(this.heightProperty());
@@ -38,12 +36,9 @@ public class MediaScreen extends BorderPane {
         factory.release();
         player.videoSurface().set(videoSurfaceForImageView(this.imageView));
 
-        logger.info("{}", url);
-        logger.info("{}", player.media());
         player.media().startPaused(url);
     }
 
-    // 100
     @Scheduled(fixedRate = 1000)
     private void updateProgressBar() {
         eventPublisher.publishEvent(new MediaPositionUpdateEvent(player.status().position()));

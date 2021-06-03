@@ -36,21 +36,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // var root = new BorderPane();
-        // var videoImageView = new ImageView();
-        // root.setCenter(videoImageView);
-        // videoImageView.fitWidthProperty().bind(root.widthProperty());
-        // videoImageView.fitHeightProperty().bind(root.heightProperty());
         Scene scene = new Scene(context.getBean(MainView.class), 1920, 1080);
 
         // set JMetro theme
         new JMetro(Style.LIGHT).setScene(scene);
 
         primaryStage.setTitle("MPlayer");
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        // play media whose url comes from properties
     }
 
     @Override

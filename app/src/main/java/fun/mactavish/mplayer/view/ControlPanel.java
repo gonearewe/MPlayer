@@ -32,9 +32,11 @@ public class ControlPanel extends BorderPane {
             @Override
             public void handle(final MouseEvent event) {
                 if (playing) {
+                    // With media playing, pressing this button means Pause.
                     eventPublisher.publishEvent(MediaPauseEvent.INSTANCE);
                     playOrPause.setText("Play");
                 } else {
+                    // With media paused, pressing this button means Play(a.k.a. Resume).
                     eventPublisher.publishEvent(MediaPlayEvent.INSTANCE);
                     playOrPause.setText("Pause");
                 }
