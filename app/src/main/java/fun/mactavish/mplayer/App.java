@@ -28,14 +28,12 @@ public class App extends Application {
     }
 
     @Override
-    public void init() {
-        // initialize Spring Boot
-        String[] commandLineArgs = getParameters().getRaw().toArray(new String[0]);
-        this.context = SpringApplication.run(App.class, commandLineArgs);
-    }
-
-    @Override
     public void start(Stage primaryStage) {
+        String[] commandLineArgs = getParameters().getRaw().toArray(new String[0]);
+        var springApplication = new SpringApplication(App.class);
+        springApplication.addInitializers(context -> context.getBeanFactory().registerSingleton("stage", primaryStage));
+        this.context = springApplication.run(commandLineArgs);
+
         Scene scene = new Scene(context.getBean(MainView.class), 1920, 1080);
 
         // set JMetro theme

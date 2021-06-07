@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainView extends BorderPane {
     @Autowired
-    MainView(MediaScreen screen, ControlPanel controlPanel) {
+    MainView(MenuBar menuBar, MediaScreen screen, ControlPanel controlPanel) {
+        setTop(menuBar);
         setCenter(screen);
         // Avoid overlapping of the screen.
         screen.setMinSize(0, 0);

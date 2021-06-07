@@ -1,54 +1,45 @@
 package fun.mactavish.mplayer.view;
 
-import fun.mactavish.mplayer.event.MediaPauseEvent;
-import fun.mactavish.mplayer.event.MediaPlayEvent;
+import fun.mactavish.mplayer.event.MediaPlayOrPauseEvent;
+import fun.mactavish.mplayer.event.MediaStatusUpdateEvent;
 import fun.mactavish.mplayer.event.MediaStopEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ControlPanel extends BorderPane {
     private final Logger logger = LoggerFactory.getLogger(ControlPanel.class);
+    private final Button playOrPauseButton = new Button("Play");
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     ControlPanel(ProgressBar progressBar) {
+        playOrPauseButton.setOnMouseClicked(e -> eventPublisher.publishEvent(MediaPlayOrPauseEvent.INSTANCE));
+
+        var stopButton = new Button("Stop");
+        stopButton.setOnMouseClicked(e -> eventPublisher.publishEvent(MediaStopEvent.INSTANCE));
+
+        var buttons = new HBox(playOrPauseButton, stopButton);
+        buttons.setAlignment(Pos.BASELINE_CENTER);
+        buttons.setSpacing(100);
+
         setTop(progressBar);
-        var buttons = new ButtonBar();
-
-        var playOrPause = new Button("Play");
-        playOrPause.setOnMouseClicked(new EventHandler<>() {
-            private boolean playing = false;
-
-            @Override
-            public void handle(final MouseEvent event) {
-                if (playing) {
-                    // With media playing, pressing this button means Pause.
-                    eventPublisher.publishEvent(MediaPauseEvent.INSTANCE);
-                    playOrPause.setText("Play");
-                } else {
-                    // With media paused, pressing this button means Play(a.k.a. Resume).
-                    eventPublisher.publishEvent(MediaPlayEvent.INSTANCE);
-                    playOrPause.setText("Pause");
-                }
-                playing = !playing;
-            }
-        });
-
-        var stop = new Button("Stop");
-        stop.setOnMouseClicked(e -> eventPublisher.publishEvent(MediaStopEvent.INSTANCE));
-
-        buttons.getButtons().add(playOrPause);
-        buttons.getButtons().add(stop);
         setCenter(buttons);
+    }
+
+    @EventListener
+    public void onMediaStatusUpdate(MediaStatusUpdateEvent event) {
+        String text = event.isPlaying() ? "Pause" : "Play";
+        Platform.runLater(() -> playOrPauseButton.setText(text));
     }
 }

@@ -1,6 +1,6 @@
 package fun.mactavish.mplayer.view;
 
-import fun.mactavish.mplayer.event.MediaPositionUpdateEvent;
+import fun.mactavish.mplayer.event.MediaStatusUpdateEvent;
 import fun.mactavish.mplayer.event.ProgressPositionUpdateEvent;
 import javafx.scene.control.Slider;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ class ProgressBar extends Slider {
     }
 
     @EventListener
-    public void onMediaPositionUpdate(MediaPositionUpdateEvent event) {
+    public void onMediaPositionUpdate(MediaStatusUpdateEvent event) {
         internalRefreshing.set(true);
         setValue(event.getNormalizedPosition() * maxValue);
         internalRefreshing.set(false);
