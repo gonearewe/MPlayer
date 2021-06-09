@@ -31,11 +31,11 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         String[] commandLineArgs = getParameters().getRaw().toArray(new String[0]);
         var springApplication = new SpringApplication(App.class);
-        springApplication.addInitializers(context -> context.getBeanFactory().registerSingleton("stage", primaryStage));
+        springApplication.addInitializers(context -> context.getBeanFactory().registerSingleton("primaryStage", primaryStage));
         this.context = springApplication.run(commandLineArgs);
 
         Scene scene = new Scene(context.getBean(MainView.class), 1920, 1080);
-
+        scene.getAccelerators().putAll(context.getBean(KeyboardShortcuts.class));
         // set JMetro theme
         new JMetro(Style.LIGHT).setScene(scene);
 

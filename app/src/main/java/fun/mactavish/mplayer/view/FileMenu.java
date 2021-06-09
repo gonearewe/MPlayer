@@ -16,11 +16,6 @@ class FileMenu extends Menu {
         super("File");
         getItems().addAll(new MenuItem("Open File") {
             {
-                // 不是结点
-                // addEventHandler(MouseEvent.MOUSE_PRESSED,event -> {
-                //     System.out.println(primaryStage);
-                //     new FileChooser().showOpenDialog(primaryStage);
-                // });
                 setOnAction(action -> {
                     var f = new FileChooser().showOpenDialog(primaryStage);
                     eventPublisher.publishEvent(new MediaStartEvent(f.getAbsolutePath()));
